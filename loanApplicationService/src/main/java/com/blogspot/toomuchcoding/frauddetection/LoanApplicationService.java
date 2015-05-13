@@ -1,17 +1,18 @@
 package com.blogspot.toomuchcoding.frauddetection;
 
-import com.blogspot.toomuchcoding.frauddetection.model.FraudCheckStatus;
-import com.blogspot.toomuchcoding.frauddetection.model.FraudServiceRequest;
-import com.blogspot.toomuchcoding.frauddetection.model.FraudServiceResponse;
-import com.blogspot.toomuchcoding.frauddetection.model.LoanApplication;
-import com.blogspot.toomuchcoding.frauddetection.model.LoanApplicationResult;
-import com.blogspot.toomuchcoding.frauddetection.model.LoanApplicationStatus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.blogspot.toomuchcoding.frauddetection.model.FraudCheckStatus;
+import com.blogspot.toomuchcoding.frauddetection.model.FraudServiceRequest;
+import com.blogspot.toomuchcoding.frauddetection.model.FraudServiceResponse;
+import com.blogspot.toomuchcoding.frauddetection.model.LoanApplication;
+import com.blogspot.toomuchcoding.frauddetection.model.LoanApplicationResult;
+import com.blogspot.toomuchcoding.frauddetection.model.LoanApplicationStatus;
 
 @Service
 public class LoanApplicationService {
@@ -52,8 +53,6 @@ public class LoanApplicationService {
 		LoanApplicationStatus applicationStatus = null;
 		if (FraudCheckStatus.OK == response.getFraudCheckStatus()) {
 			applicationStatus = LoanApplicationStatus.LOAN_APPLIED;
-		} else if (FraudCheckStatus.FRAUD == response.getFraudCheckStatus()) {
-			applicationStatus = LoanApplicationStatus.LOAN_APPLICATION_REJECTED;
 		}
 
 		return new LoanApplicationResult(applicationStatus, response.getRejectionReason());
