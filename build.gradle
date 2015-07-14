@@ -5,7 +5,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-		classpath 'io.codearte.accurest:accurest-gradle-plugin:0.6.2'
+		classpath 'io.codearte.accurest:accurest-gradle-plugin:0.7.1'
 	}
 }
 
@@ -90,5 +90,5 @@ configure(project(':loanApplicationService')) {
 		into "src/test/resources/"
 	}
 
-	generateAccurest.dependsOn('copyCollaboratorStubs')
+	test.dependsOn('copyCollaboratorStubs')
 }
