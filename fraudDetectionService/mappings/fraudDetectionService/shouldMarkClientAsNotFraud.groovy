@@ -4,7 +4,7 @@ io.codearte.accurest.dsl.GroovyDsl.make {
                 url """/fraudcheck"""
                 body('''
                     {
-                    "clientPesel":"1234567890",
+                    "clientPesel":"12345678902",
                     "loanAmount":123.123}
                 '''
                 )
