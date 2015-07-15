@@ -5,15 +5,13 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-		classpath 'io.codearte.accurest:accurest-gradle-plugin:0.7.1'
+
 	}
 }
 
 ext {
 	spockVersion = '1.0-groovy-2.4'
 	restAssuredVersion = '2.4.0'
-
-	accurestStubsBaseDirectory = 'src/test/resources/stubs'
 }
 
 subprojects {
@@ -37,21 +35,6 @@ subprojects {
 
 configure([project(':fraudDetectionService'), project(':loanApplicationService')]) {
 	apply plugin: 'spring-boot'
-	apply plugin: 'accurest'
-
-	ext {
-		wiremockStubsOutputDirRoot = file("${project.buildDir}/production/${project.name}-stubs/")
-		wiremockStubsOutputDir = new File(wiremockStubsOutputDirRoot, 'mappings/')
-	}
-
-	accurest {
-		targetFramework = 'Spock'
-		testMode = 'MockMvc'
-		baseClassForTests = 'com.blogspot.toomuchcoding.MvcSpec'
-		contractsDslDir = file("${project.projectDir.absolutePath}/mappings/")
-		generatedTestSourcesDir = file("${project.buildDir}/generated-sources/")
-		stubsOutputDir = wiremockStubsOutputDir
-	}
 
 	jar {
 		version = '0.0.1'
@@ -70,25 +53,11 @@ configure([project(':fraudDetectionService'), project(':loanApplicationService')
 		testCompile "com.jayway.restassured:spring-mock-mvc:$restAssuredVersion"
 	}
 
-	task cleanup(type: Delete) {
-		delete 'src/test/resources/mappings', 'src/test/resources/stubs'
-	}
 
-	clean.dependsOn('cleanup')
 
 }
 
-configure(project(':fraudDetectionService')) {
-	test.dependsOn('generateWiremockClientStubs')
-}
 
 configure(project(':loanApplicationService')) {
 
-	task copyCollaboratorStubs(type: Copy) {
-		File fraudBuildDir = project(':fraudDetectionService').buildDir
-		from(new File(fraudBuildDir, "/production/${project(':fraudDetectionService').name}-stubs/"))
-		into "src/test/resources/"
-	}
-
-	test.dependsOn('copyCollaboratorStubs')
 }
