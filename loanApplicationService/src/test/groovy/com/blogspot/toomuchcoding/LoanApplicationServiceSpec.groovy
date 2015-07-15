@@ -27,7 +27,7 @@ class LoanApplicationServiceSpec extends Specification {
 	def 'should successfully apply for loan'() {
 		given:
 			LoanApplication application =
-					new LoanApplication(client: new Client(pesel: '1234567890'), amount: 123.123)
+					new LoanApplication(client: new Client(pesel: '12345678902'), amount: 123.123)
 		when:
 			LoanApplicationResult loanApplication = sut.loanApplication(application)
 		then:
@@ -38,7 +38,7 @@ class LoanApplicationServiceSpec extends Specification {
 	def 'should be rejected due to abnormal loan amount'() {
 		given:
 			LoanApplication application =
-					new LoanApplication(client: new Client(pesel: '1234567890'), amount: 99_999)
+					new LoanApplication(client: new Client(pesel: '12345678902'), amount: 99_999)
 		when:
 			LoanApplicationResult loanApplication = sut.loanApplication(application)
 		then:
