@@ -18,6 +18,7 @@ ext {
 
 subprojects {
 	apply plugin: 'groovy'
+	apply plugin: 'maven-publish'
 
 
 	repositories {
@@ -41,8 +42,8 @@ configure([project(':fraudDetectionService'), project(':loanApplicationService')
 	apply plugin: 'accurest'
 
 	ext {
-		wiremockStubsOutputDirRoot = file("${project.buildDir}/production/${project.name}-stubs/")
-		wiremockStubsOutputDir = new File(wiremockStubsOutputDirRoot, 'mappings/')
+		wireMockStubsOutputDirRoot = file("${project.buildDir}/production/${project.name}-stubs/")
+		wireMockStubsOutputDir = new File(wireMockStubsOutputDirRoot, 'mappings/')
 	}
 
 	accurest {
@@ -51,7 +52,7 @@ configure([project(':fraudDetectionService'), project(':loanApplicationService')
 		baseClassForTests = 'com.blogspot.toomuchcoding.MvcSpec'
 		contractsDslDir = file("${project.projectDir.absolutePath}/mappings/")
 		generatedTestSourcesDir = file("${project.buildDir}/generated-sources/")
-		stubsOutputDir = wiremockStubsOutputDir
+		stubsOutputDir = wireMockStubsOutputDir
 	}
 
 	jar {
@@ -76,10 +77,40 @@ configure([project(':fraudDetectionService'), project(':loanApplicationService')
 
 configure(project(':fraudDetectionService')) {
 	test.dependsOn('generateWiremockClientStubs')
+
+	task stubsJar(type: Jar, dependsOn: 'generateWireMockClientStubs') {
+		baseName = "${project.name}-stubs"
+		from wireMockStubsOutputDirRoot
+	}
+
+	artifacts {
+		archives stubsJar
+	}
+
+	publishing {
+//		repositories {
+//			maven {
+//				url getProperty('mavenRepoUrl')
+//				credentials {
+//					username getProperty('mavenUser')
+//					password getProperty('mavenPassword')
+//				}
+//			}
+		publications {
+			stubs(MavenPublication) {
+				groupId "cdc-examples"
+				artifactId "${project.name}-stubs"
+				version '0.0.1'
+
+				artifact stubsJar
+
+			}
+		}
+	}
 }
 
 configure(project(':loanApplicationService')) {
-   test {
-	   jvmArgs "-DAPP_ENV=dev"
-   }
+	test {
+		jvmArgs "-DAPP_ENV=dev"
+	}
 }
