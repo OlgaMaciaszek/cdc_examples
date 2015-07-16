@@ -1,9 +1,9 @@
 {
   "pl": {
-    "this": "com/blogspot/toomuchcoding/loan-application",
+    "this": "com/blogspot/toomuchcoding/loanApplicationService",
     "dependencies": {
       "collerator": {
-        "path": "com/blogspot/toomuchcoding/fraud-detection"
+        "path": "com/blogspot/toomuchcoding/fraudDetectionService"
       }
     }
   }
