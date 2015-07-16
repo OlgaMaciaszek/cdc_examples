@@ -76,7 +76,7 @@ configure([project(':fraudDetectionService'), project(':loanApplicationService')
 }
 
 configure(project(':fraudDetectionService')) {
-	test.dependsOn('generateWiremockClientStubs')
+	test.dependsOn('generateWireMockClientStubs')
 
 	task stubsJar(type: Jar, dependsOn: 'generateWireMockClientStubs') {
 		baseName = "${project.name}-stubs"
@@ -98,7 +98,7 @@ configure(project(':fraudDetectionService')) {
 //			}
 		publications {
 			stubs(MavenPublication) {
-				groupId "cdc-examples"
+				groupId "com.blogspot.toomuchcoding"
 				artifactId "${project.name}-stubs"
 				version '0.0.1'
 
