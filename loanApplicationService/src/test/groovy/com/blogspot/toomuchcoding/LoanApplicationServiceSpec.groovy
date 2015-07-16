@@ -11,10 +11,12 @@ import org.junit.ClassRule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.SpringApplicationContextLoader
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.web.WebAppConfiguration
 import spock.lang.Shared
 import spock.lang.Specification
 
 @ContextConfiguration(loader = SpringApplicationContextLoader, classes = Application)
+@WebAppConfiguration
 class LoanApplicationServiceSpec extends Specification {
 
 	@ClassRule
@@ -22,14 +24,18 @@ class LoanApplicationServiceSpec extends Specification {
 	WireMockClassRule wireMockRule = new WireMockClassRule()
 
 	@Autowired
-	LoanApplicationService sut
+	LoanApplicationService loanApplicationService
+
+	def setup() {
+		System.setProperty('APP_ENV', 'dev')
+	}
 
 	def 'should successfully apply for loan'() {
 		given:
 			LoanApplication application =
 					new LoanApplication(client: new Client(pesel: '12345678902'), amount: 123.123)
 		when:
-			LoanApplicationResult loanApplication = sut.loanApplication(application)
+			LoanApplicationResult loanApplication = loanApplicationService.loanApplication(application)
 		then:
 			loanApplication.loanApplicationStatus == LoanApplicationStatus.LOAN_APPLIED
 			loanApplication.rejectionReason == null
@@ -40,7 +46,7 @@ class LoanApplicationServiceSpec extends Specification {
 			LoanApplication application =
 					new LoanApplication(client: new Client(pesel: '12345678902'), amount: 99_999)
 		when:
-			LoanApplicationResult loanApplication = sut.loanApplication(application)
+			LoanApplicationResult loanApplication = loanApplicationService.loanApplication(application)
 		then:
 			loanApplication.loanApplicationStatus == LoanApplicationStatus.LOAN_APPLICATION_REJECTED
 			loanApplication.rejectionReason == 'Amount too high'

@@ -1,0 +1,10 @@
+{
+  "pl": {
+    "this": "com/blogspot/toomuchcoding/loan-application",
+    "dependencies": {
+      "collerator": {
+        "path": "com/blogspot/toomuchcoding/fraud-detection"
+      }
+    }
+  }
+}
