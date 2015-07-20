@@ -12,13 +12,13 @@ buildscript {
 
 ext {
 	spockVersion = '1.0-groovy-2.4'
-	restAssuredVersion = '2.4.0'
+	restAssuredVersion = '2.4.1'
 }
 
 subprojects {
 	ext {
-		wiremockStubsOutputDirRoot = file("${project.buildDir}/production/${project.name}-stubs/")
-        wiremockStubsOutputDir = new File(wiremockStubsOutputDirRoot, 'mappings/')
+		wireMockStubsOutputDirRoot = file("${project.buildDir}/production/${project.name}-stubs/")
+        wireMockStubsOutputDir = new File(wireMockStubsOutputDirRoot, 'mappings/')
 	}
 
 	apply plugin: 'groovy'
@@ -30,7 +30,7 @@ subprojects {
 		baseClassForTests = 'com.blogspot.toomuchcoding.MvcSpec'
 		contractsDslDir = file("${project.projectDir.absolutePath}/mappings/")
 		generatedTestSourcesDir = file("${project.buildDir}/generated-sources/")
-		stubsOutputDir = wiremockStubsOutputDir
+		stubsOutputDir = wireMockStubsOutputDir
 	}
 
 
