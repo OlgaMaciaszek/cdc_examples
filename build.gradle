@@ -11,7 +11,7 @@ buildscript {
 
 ext {
 	spockVersion = '1.0-groovy-2.4'
-	restAssuredVersion = '2.4.0'
+	restAssuredVersion = '2.4.1'
 
 	accurestStubsBaseDirectory = 'src/test/resources/stubs'
 }
@@ -35,15 +35,18 @@ subprojects {
 			exclude group: 'org.mortbay.jetty', module: 'servlet-api'
 		}
 	}
+
+		task allDeps(type: DependencyReportTask) {}
+
 }
 
-configure([project(':fraudDetectionService'), project(':loanApplicationService')]) {
+configure(project(':fraudDetectionService')) {
 	apply plugin: 'spring-boot'
 	apply plugin: 'accurest'
 
 	ext {
 		wireMockStubsOutputDirRoot = file("${project.buildDir}/production/${project.name}-stubs/")
-		wireMockStubsOutputDir = new File(wireMockStubsOutputDirRoot, 'mappings/')
+		wireMockStubsOutputDir = new File(wireMockStubsOutputDirRoot, 'mappings/com/blogspot/toomuchcoding/')
 	}
 
 	accurest {
@@ -106,11 +109,5 @@ configure(project(':fraudDetectionService')) {
 
 			}
 		}
-	}
-}
-
-configure(project(':loanApplicationService')) {
-	test {
-		jvmArgs "-DAPP_ENV=dev"
 	}
 }
