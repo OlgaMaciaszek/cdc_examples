@@ -5,17 +5,32 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-
+        classpath 'io.codearte.accurest:accurest-gradle-plugin:0.7.1'
 	}
 }
 
 ext {
 	spockVersion = '1.0-groovy-2.4'
-	restAssuredVersion = '2.4.0'
+	restAssuredVersion = '2.4.1'
 }
 
 subprojects {
+	ext {
+		wireMockStubsOutputDirRoot = file("${project.buildDir}/production/${project.name}-stubs/")
+		wireMockStubsOutputDir = new File(wireMockStubsOutputDirRoot, 'mappings/')
+	}
+
 	apply plugin: 'groovy'
+	apply plugin: 'accurest'
+
+	accurest {
+		targetFramework = 'Spock'
+		testMode = 'MockMvc'
+		baseClassForTests = 'com.blogspot.toomuchcoding.MvcSpec'
+		contractsDslDir = file("${project.projectDir.absolutePath}/mappings/")
+		generatedTestSourcesDir = file("${project.buildDir}/generated-sources/")
+		stubsOutputDir = wireMockStubsOutputDir
+	}
 
 
 	repositories {
