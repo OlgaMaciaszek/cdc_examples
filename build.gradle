@@ -11,7 +11,7 @@ buildscript {
 
 ext {
 	spockVersion = '1.0-groovy-2.4'
-	restAssuredVersion = '2.4.0'
+	restAssuredVersion = '2.4.1'
 }
 
 subprojects {
