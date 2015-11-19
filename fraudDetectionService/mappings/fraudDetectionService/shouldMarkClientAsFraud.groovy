@@ -4,7 +4,7 @@ import groovy.transform.Field
 public static final String PESEL_REGEXP = '[0-9]{11}'
 
 @Field
-public static final String SMALL_AMOUNT_REGEXP = '[1-9]{5}'
+public static final String HIGH_AMOUNT_REGEXP = '[1-9]{5}'
 
 io.codearte.accurest.dsl.GroovyDsl.make {
     request {
@@ -12,7 +12,7 @@ io.codearte.accurest.dsl.GroovyDsl.make {
         url """/fraudcheck"""
         body(
                 clientPesel: value(client(regex(PESEL_REGEXP)), server("12345678902")),
-                loanAmount: value(client(regex(SMALL_AMOUNT_REGEXP)), server(99999))
+                loanAmount: value(client(regex(HIGH_AMOUNT_REGEXP)), server(99999))
         )
         headers {
             header("""Content-Type""", """application/vnd.fraud.v1+json""")
