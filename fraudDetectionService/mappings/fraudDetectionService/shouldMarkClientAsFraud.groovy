@@ -11,8 +11,8 @@ io.codearte.accurest.dsl.GroovyDsl.make {
         method """PUT"""
         url """/fraudcheck"""
         body(
-                clientPesel: value(client(regex(PESEL_REGEXP)), server("12345678902")),
-                loanAmount: value(client(regex(HIGH_AMOUNT_REGEXP)), server(99999))
+                clientPesel: value(stub(regex(PESEL_REGEXP)), test("12345678902")),
+                loanAmount: value(stub(regex(HIGH_AMOUNT_REGEXP)), test(99999))
         )
         headers {
             header("""Content-Type""", """application/vnd.fraud.v1+json""")
