@@ -5,7 +5,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-		classpath 'io.codearte.accurest:accurest-gradle-plugin:0.7.1'
+		classpath 'io.codearte.accurest:accurest-gradle-plugin:0.9.10'
 
 	}
 }
