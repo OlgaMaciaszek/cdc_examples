@@ -5,7 +5,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-        classpath 'io.codearte.accurest:accurest-gradle-plugin:0.7.1'
+        classpath 'io.codearte.accurest:accurest-gradle-plugin:0.9.10'
 	}
 }
 
@@ -26,7 +26,6 @@ subprojects {
 	accurest {
 		targetFramework = 'Spock'
 		testMode = 'MockMvc'
-		baseClassForTests = 'com.blogspot.toomuchcoding.MvcSpec'
 		contractsDslDir = file("${project.projectDir.absolutePath}/mappings/")
 		generatedTestSourcesDir = file("${project.buildDir}/generated-sources/")
 		stubsOutputDir = wireMockStubsOutputDir
@@ -70,6 +69,10 @@ configure([project(':fraudDetectionService'), project(':loanApplicationService')
 
 
 
+}
+
+configure(project(':fraudDetectionService')) {
+	test.dependsOn('generateWireMockClientStubs')
 }
 
 
