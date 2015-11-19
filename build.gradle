@@ -73,6 +73,10 @@ configure([project(':fraudDetectionService'), project(':loanApplicationService')
 
 }
 
+configure(project(':fraudDetectionService'))   {
+	test.dependsOn('generateWireMockClientStubs')
+}
+
 
 configure(project(':loanApplicationService')) {
 
