@@ -1,14 +1,14 @@
 import groovy.transform.Field
 
 @Field
-public static final String PESEL_REGEXP = '[0-9]{11}'
+public static final String ID_REGEXP = '[0-9]{11}'
 
-io.codearte.accurest.dsl.GroovyDsl.make {
+io.codearte.accurest.dsl.Accurest.make {
   request {
     method 'PUT'
     url '/fraudcheck'
     body(
-        clientPesel: value(client(regex(PESEL_REGEXP)), server("12345678902")),
+        clientPesel: value(client(regex(ID_REGEXP)), server("12345678902")),
         loanAmount: 123.123
     )
     headers {

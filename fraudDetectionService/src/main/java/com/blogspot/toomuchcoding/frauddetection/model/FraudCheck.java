@@ -1,4 +1,4 @@
-package com.blogspot.toomuchcoding.frauddetection.model;
+package com.toomuchcoding.frauddetection.model;
 
 import java.math.BigDecimal;
 

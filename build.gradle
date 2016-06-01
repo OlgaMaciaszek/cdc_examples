@@ -5,9 +5,10 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-		classpath 'io.codearte.accurest:accurest-gradle-plugin:1.0.4'
+		classpath 'io.codearte.accurest:accurest-gradle-plugin:1.1.0-M7'
 	}
 }
+
 
 ext {
 	spockVersion = '1.0-groovy-2.4'
@@ -28,15 +29,17 @@ subprojects {
 	}
 
 	dependencies {
-		testCompile "org.codehaus.groovy:groovy-all:2.4.3"
-		testCompile "org.spockframework:spock-core:$spockVersion"
+		compile("org.codehaus.groovy:groovy-all:2.4.5")
+		testCompile("org.spockframework:spock-core:$spockVersion") {
+			exclude(group: 'org.codehaus.groovy')
+		}
 		testCompile("junit:junit:4.12")
-		testCompile('com.github.tomakehurst:wiremock:1.52') {
+		testCompile('com.github.tomakehurst:wiremock:1.58') {
 			exclude group: 'org.mortbay.jetty', module: 'servlet-api'
 		}
 	}
 
-		task allDeps(type: DependencyReportTask) {}
+	task allDeps(type: DependencyReportTask) {}
 
 }
 
@@ -46,43 +49,46 @@ configure(project(':fraudDetectionService')) {
 
 	ext {
 		wireMockStubsOutputDirRoot = file("${project.buildDir}/production/${project.name}-stubs/")
-		wireMockStubsOutputDir = new File(wireMockStubsOutputDirRoot, 'mappings/com/blogspot/toomuchcoding/')
+		wireMockStubsOutputDir = file(new File(wireMockStubsOutputDirRoot, 'mappings/'))
 	}
 
 	accurest {
 		targetFramework = 'Spock'
 		testMode = 'MockMvc'
-		baseClassForTests = 'com.blogspot.toomuchcoding.MvcSpec'
+		baseClassForTests = 'com.toomuchcoding.MvcSpec'
 		contractsDslDir = file("${project.projectDir.absolutePath}/mappings/")
 		generatedTestSourcesDir = file("${project.buildDir}/generated-sources/")
 		stubsOutputDir = wireMockStubsOutputDir
 	}
 
-	jar {
-		version = '0.0.1'
-	}
+	group = 'com.toomuchcoding'
+	version = '0.0.1-SNAPSHOT'
 
 	dependencies {
-		compile("org.springframework.boot:spring-boot-starter-web") {
-			exclude module: "spring-boot-starter-tomcat"
-		}
+		compile("org.springframework.boot:spring-boot-starter-web")
 		compile("org.springframework.boot:spring-boot-starter-jetty")
 		compile("org.springframework.boot:spring-boot-starter-actuator")
-		compile 'com.ofg:micro-infra-spring-boot-starter:0.9.1'
+		compile('com.ofg:micro-infra-spring-boot-starter:0.9.1')
 
-		testRuntime "org.spockframework:spock-spring:$spockVersion"
+		testRuntime("org.spockframework:spock-spring:$spockVersion") {
+			exclude group: 'org.codehaus.groovy'
+		}
 		testCompile "org.springframework:spring-test"
-		testCompile "com.jayway.restassured:rest-assured:$restAssuredVersion"
-		testCompile "com.jayway.restassured:spring-mock-mvc:$restAssuredVersion"
+		testCompile("com.jayway.restassured:rest-assured:$restAssuredVersion") {
+			exclude group: 'org.codehaus.groovy'
+		}
+		testCompile("com.jayway.restassured:spring-mock-mvc:$restAssuredVersion") {
+			exclude group: 'org.codehaus.groovy'
+		}
 	}
-
 }
 
 configure(project(':fraudDetectionService')) {
 	test.dependsOn('generateWireMockClientStubs')
 
 	task stubsJar(type: Jar, dependsOn: 'generateWireMockClientStubs') {
-		baseName = "${project.name}-stubs"
+		baseName = "${project.name}"
+		classifier = 'stubs'
 		from wireMockStubsOutputDirRoot
 	}
 
@@ -91,19 +97,9 @@ configure(project(':fraudDetectionService')) {
 	}
 
 	publishing {
-//		repositories {
-//			maven {
-//				url getProperty('mavenRepoUrl')
-//				credentials {
-//					username getProperty('mavenUser')
-//					password getProperty('mavenPassword')
-//				}
-//			}
 		publications {
 			stubs(MavenPublication) {
-				groupId "com.blogspot.toomuchcoding"
-				artifactId "${project.name}-stubs"
-				version '0.0.1'
+				artifactId "${project.name}"
 
 				artifact stubsJar
 
@@ -111,3 +107,4 @@ configure(project(':fraudDetectionService')) {
 		}
 	}
 }
+

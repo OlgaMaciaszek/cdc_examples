@@ -1,4 +1,4 @@
-package com.blogspot.toomuchcoding.frauddetection;
+package com.toomuchcoding.frauddetection;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

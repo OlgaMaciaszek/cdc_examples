@@ -1,6 +1,6 @@
-package com.blogspot.toomuchcoding
+package com.toomuchcoding
 
-import com.blogspot.toomuchcoding.frauddetection.FraudDetectionController
+import com.toomuchcoding.frauddetection.FraudDetectionController
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc
 import spock.lang.Specification
 

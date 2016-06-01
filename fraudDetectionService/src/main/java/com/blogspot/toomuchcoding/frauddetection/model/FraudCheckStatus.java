@@ -1,4 +1,4 @@
-package com.blogspot.toomuchcoding.frauddetection.model;
+package com.toomuchcoding.frauddetection.model;
 
 public enum FraudCheckStatus {
 	OK, FRAUD

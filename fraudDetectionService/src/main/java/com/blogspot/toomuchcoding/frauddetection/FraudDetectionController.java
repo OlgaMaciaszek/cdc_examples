@@ -1,15 +1,15 @@
-package com.blogspot.toomuchcoding.frauddetection;
+package com.toomuchcoding.frauddetection;
 
-import com.blogspot.toomuchcoding.frauddetection.model.FraudCheck;
-import com.blogspot.toomuchcoding.frauddetection.model.FraudCheckResult;
+import com.toomuchcoding.frauddetection.model.FraudCheck;
+import com.toomuchcoding.frauddetection.model.FraudCheckResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
-import static com.blogspot.toomuchcoding.frauddetection.model.FraudCheckStatus.FRAUD;
-import static com.blogspot.toomuchcoding.frauddetection.model.FraudCheckStatus.OK;
+import static com.toomuchcoding.frauddetection.model.FraudCheckStatus.FRAUD;
+import static com.toomuchcoding.frauddetection.model.FraudCheckStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
